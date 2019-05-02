@@ -380,6 +380,13 @@ void JackAudioSystem::initializeInput() {
 	}
 
 	init_jack();
+	if (!jasys->bJackIsGood) {
+		if (jai) {
+			jai->qmMutex.unlock();
+		}
+
+		return;
+	}
 
 	in_port = jack_port_register(client, "input", JACK_DEFAULT_AUDIO_TYPE, JackPortIsInput, 0);
 	if (in_port == NULL) {
@@ -434,6 +441,13 @@ void JackAudioSystem::initializeOutput() {
 	}
 
 	init_jack();
+	if (!jasys->bJackIsGood) {
+		if (jao) {
+			jao->qmMutex.unlock();
+		}
+
+		return;
+	}
 
 	for (unsigned int i = 0; i < iOutPorts; ++i) {
 		char name[10];
